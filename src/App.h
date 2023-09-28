@@ -423,7 +423,10 @@ public:
                         secWebSocketExtensions = "";
                     }
 
-                    res->template upgrade<UserData>({}, secWebSocketKey, secWebSocketProtocol, secWebSocketExtensions, (struct us_socket_context_t *) webSocketContext);
+                    std::string_view eio_ver = req->getQuery("EIO");
+                    std::cout << "EIO = " << eio_ver << std::endl;
+                    int eio_ver_no = std::atoi(eio_ver.data());
+                    res->template upgrade<UserData>({.eio_ver = eio_ver_no}, secWebSocketKey, secWebSocketProtocol, secWebSocketExtensions, (struct us_socket_context_t *) webSocketContext);
                 }
 
                 /* We are going to get uncorked by the Http get return */
